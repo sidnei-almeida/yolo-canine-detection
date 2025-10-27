@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Script de verificação pré-deploy para Streamlit Cloud
-Verifica se todos os arquivos necessários estão presentes e configurados corretamente
+Pre-deployment verification script for Streamlit Cloud
+Verifies all necessary files are present and configured correctly
 """
 
 import sys
@@ -9,28 +9,28 @@ from pathlib import Path
 import yaml
 
 def check_file_exists(file_path, description):
-    """Verifica se um arquivo existe"""
+    """Verifies if a file exists"""
     path = Path(file_path)
     if path.exists():
         print(f"✅ {description}: {file_path}")
         return True
     else:
-        print(f"❌ {description} não encontrado: {file_path}")
+        print(f"❌ {description} not found: {file_path}")
         return False
 
 def check_directory_exists(dir_path, description):
-    """Verifica se um diretório existe"""
+    """Verifies if a directory exists"""
     path = Path(dir_path)
     if path.exists() and path.is_dir():
         files = list(path.iterdir())
-        print(f"✅ {description}: {dir_path} ({len(files)} arquivos)")
+        print(f"✅ {description}: {dir_path} ({len(files)} files)")
         return True
     else:
-        print(f"❌ {description} não encontrado: {dir_path}")
+        print(f"❌ {description} not found: {dir_path}")
         return False
 
 def check_requirements():
-    """Verifica requirements.txt"""
+    """Checks requirements.txt"""
     required_packages = [
         'streamlit',
         'ultralytics',
@@ -47,7 +47,7 @@ def check_requirements():
     
     req_file = Path('requirements.txt')
     if not req_file.exists():
-        print("❌ requirements.txt não encontrado")
+        print("❌ requirements.txt not found")
         return False
     
     with open(req_file) as f:
@@ -59,96 +59,95 @@ def check_requirements():
             missing.append(pkg)
     
     if missing:
-        print(f"❌ Pacotes faltando em requirements.txt: {', '.join(missing)}")
+        print(f"❌ Missing packages in requirements.txt: {', '.join(missing)}")
         return False
     else:
-        print(f"✅ requirements.txt com todos os pacotes necessários")
+        print(f"✅ requirements.txt has all required packages")
         return True
 
 def check_git_lfs():
-    """Verifica se Git LFS está configurado"""
+    """Verifies if Git LFS is configured"""
     gitattributes = Path('.gitattributes')
     if gitattributes.exists():
         with open(gitattributes) as f:
             content = f.read()
         if '*.pt' in content and 'lfs' in content:
-            print("✅ Git LFS configurado para arquivos .pt")
+            print("✅ Git LFS configured for .pt files")
             return True
         else:
-            print("❌ Git LFS não configurado corretamente em .gitattributes")
+            print("❌ Git LFS not configured correctly in .gitattributes")
             return False
     else:
-        print("⚠️  .gitattributes não encontrado (Git LFS pode não estar configurado)")
+        print("⚠️  .gitattributes not found (Git LFS may not be configured)")
         return False
 
 def check_config_yaml():
-    """Verifica config.yaml"""
+    """Checks config.yaml"""
     config_file = Path('config.yaml')
     if not config_file.exists():
-        print("⚠️  config.yaml não encontrado (usará defaults)")
+        print("⚠️  config.yaml not found (will use defaults)")
         return True
     
     try:
         with open(config_file) as f:
             config = yaml.safe_load(f)
         
-        # Verificar se device está configurado para CPU
+        # Check if device is configured for CPU
         device = config.get('performance', {}).get('device', 'cpu')
         if device == 'cpu':
-            print("✅ config.yaml configurado para CPU (correto para Streamlit Cloud)")
+            print("✅ config.yaml configured for CPU (correct for Streamlit Cloud)")
         else:
-            print(f"⚠️  config.yaml com device='{device}' (recomendado: 'cpu' para Streamlit Cloud)")
+            print(f"⚠️  config.yaml with device='{device}' (recommended: 'cpu' for Streamlit Cloud)")
         
         return True
     except Exception as e:
-        print(f"❌ Erro ao ler config.yaml: {e}")
+        print(f"❌ Error reading config.yaml: {e}")
         return False
 
 def main():
-    print("🔍 Verificação de Deploy para Streamlit Cloud\n")
+    print("🔍 Streamlit Cloud Deploy Verification\n")
     print("="*60)
     
     all_ok = True
     
-    # Arquivos essenciais
-    print("\n📁 Arquivos Essenciais:")
-    all_ok &= check_file_exists('app.py', 'App principal')
-    all_ok &= check_file_exists('requirements.txt', 'Dependências Python')
-    all_ok &= check_file_exists('packages.txt', 'Dependências do sistema')
-    all_ok &= check_file_exists('.streamlit/config.toml', 'Config Streamlit')
+    # Essential files
+    print("\n📁 Essential Files:")
+    all_ok &= check_file_exists('app.py', 'Main app')
+    all_ok &= check_file_exists('requirements.txt', 'Python dependencies')
+    all_ok &= check_file_exists('packages.txt', 'System dependencies')
+    all_ok &= check_file_exists('.streamlit/config.toml', 'Streamlit config')
     
-    # Modelo
-    print("\n🤖 Modelo:")
-    all_ok &= check_file_exists('weights/best.pt', 'Modelo YOLO')
+    # Model
+    print("\n🤖 Model:")
+    all_ok &= check_file_exists('weights/best.pt', 'YOLO model')
     
-    # Dados e resultados
-    print("\n📊 Dados e Resultados:")
-    check_directory_exists('images', 'Imagens de teste')
-    check_directory_exists('results', 'Resultados de treinamento')
-    check_file_exists('results/results.csv', 'CSV de resultados')
-    check_file_exists('args/args.yaml', 'Args de treinamento')
+    # Data and results
+    print("\n📊 Data and Results:")
+    check_directory_exists('images', 'Test images')
+    check_directory_exists('results', 'Training results')
+    check_file_exists('results/results.csv', 'Results CSV')
+    check_file_exists('args/args.yaml', 'Training args')
     
-    # Configurações
-    print("\n⚙️  Configurações:")
+    # Configuration
+    print("\n⚙️  Configuration:")
     all_ok &= check_requirements()
     check_git_lfs()
     check_config_yaml()
     
-    # Resumo
+    # Summary
     print("\n" + "="*60)
     if all_ok:
-        print("✅ Tudo pronto para deploy no Streamlit Cloud!")
-        print("\nPróximos passos:")
+        print("✅ All ready for Streamlit Cloud deployment!")
+        print("\nNext steps:")
         print("1. git add .")
         print("2. git commit -m 'Prepare for deployment'")
         print("3. git push origin main")
-        print("4. Deploy em https://share.streamlit.io")
+        print("4. Deploy at https://share.streamlit.io")
         return 0
     else:
-        print("❌ Existem problemas que precisam ser corrigidos")
-        print("\nVerifique os itens marcados com ❌ acima")
+        print("❌ There are issues that need to be fixed")
+        print("\nCheck the items marked with ❌ above")
         return 1
 
 if __name__ == "__main__":
     sys.exit(main())
-

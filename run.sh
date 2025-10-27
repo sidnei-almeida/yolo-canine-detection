@@ -1,32 +1,32 @@
 #!/bin/bash
 
-# Script para executar a aplicação Canine AI
+# Script to run the Canine AI application
 
-echo "🐕 Iniciando Canine AI..."
+echo "🐕 Starting Canine AI..."
 echo ""
 
-# Verificar se o ambiente virtual existe
+# Check if virtual environment exists
 if [ ! -d "venv" ]; then
-    echo "📦 Criando ambiente virtual..."
+    echo "📦 Creating virtual environment..."
     python -m venv venv
 fi
 
-# Ativar ambiente virtual
-echo "🔧 Ativando ambiente virtual..."
+# Activate virtual environment
+echo "🔧 Activating virtual environment..."
 source venv/bin/activate
 
-# Instalar dependências se necessário
+# Install dependencies if necessary
 if [ ! -f "venv/.deps_installed" ]; then
-    echo "📥 Instalando dependências..."
+    echo "📥 Installing dependencies..."
     pip install -r requirements.txt
     touch venv/.deps_installed
 fi
 
-# Executar aplicação
-echo "🚀 Iniciando aplicação Streamlit..."
+# Run application
+echo "🚀 Starting Streamlit application..."
 echo ""
 streamlit run app.py
 
-# Desativar ambiente virtual ao sair
+# Deactivate virtual environment on exit
 deactivate
 

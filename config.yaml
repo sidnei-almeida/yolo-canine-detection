@@ -1,118 +1,117 @@
 # ========================================
-# Configurações do Canine AI
+# Canine AI Settings
 # ========================================
-# Arquivo de configuração para ajuste de parâmetros do modelo
-# Edite este arquivo para modificar os thresholds sem alterar o código
+# Configuration file for model parameter adjustment
+# Edit this file to modify thresholds without changing the code
 
-# Parâmetros de Detecção
+# Detection Parameters
 detection:
-  # Confiança mínima para uma detecção ser considerada válida (0.0 - 1.0)
-  # Valores maiores = menos detecções, mas mais precisas
-  # Valores menores = mais detecções, mas pode incluir falsos positivos
+  # Minimum confidence for a detection to be considered valid (0.0 - 1.0)
+  # Higher values = fewer detections, but more accurate
+  # Lower values = more detections, but may include false positives
   confidence_threshold: 0.35
   
-  # Threshold de IoU (Intersection over Union) para NMS (0.0 - 1.0)
-  # Controla a supressão de detecções sobrepostas
-  # Valores maiores = permite mais boxes sobrepostos
-  # Valores menores = suprime mais boxes sobrepostos
+  # IoU (Intersection over Union) threshold for NMS (0.0 - 1.0)
+  # Controls suppression of overlapping detections
+  # Higher values = allows more overlapping boxes
+  # Lower values = suppresses more overlapping boxes
   iou_threshold: 0.50
   
-  # Número máximo de detecções por imagem
+  # Maximum number of detections per image
   max_detections: 10
   
-  # Tamanho da imagem para inferência (pixels)
-  # Valores maiores = mais preciso mas mais lento
-  # Valores comuns: 320, 416, 640, 1280
+  # Image size for inference (pixels)
+  # Higher values = more accurate but slower
+  # Common values: 320, 416, 640, 1280
   image_size: 640
 
-# Parâmetros de Visualização
+# Visualization Parameters
 visualization:
-  # Espessura das linhas das bounding boxes
+  # Bounding box line thickness
   line_thickness: 2
   
-  # Mostrar labels das classes
+  # Show class labels
   show_labels: true
   
-  # Mostrar confiança nos labels
+  # Show confidence in labels
   show_confidence: true
   
-  # Formato da confiança: "percentage" ou "decimal"
+  # Confidence format: "percentage" or "decimal"
   confidence_format: "percentage"
 
-# Filtros de Classes
+# Class Filters
 filters:
-  # Habilitar filtro de classes específicas
+  # Enable filter for specific classes
   enable_class_filter: false
   
-  # Lista de IDs de classes para detectar (vazio = todas)
-  # Exemplo: [0, 1, 2] para detectar apenas as 3 primeiras raças
+  # List of class IDs to detect (empty = all)
+  # Example: [0, 1, 2] to detect only the first 3 breeds
   allowed_classes: []
   
-  # Confiança mínima por classe (opcional)
-  # Use quando algumas raças precisam de threshold diferente
+  # Minimum confidence per class (optional)
+  # Use when some breeds need different thresholds
   class_specific_confidence: {}
-    # Exemplo:
-    # 0: 0.3  # Raça ID 0 precisa apenas 30% de confiança
-    # 15: 0.5 # Raça ID 15 precisa 50% de confiança
+    # Example:
+    # 0: 0.3  # Breed ID 0 needs only 30% confidence
+    # 15: 0.5 # Breed ID 15 needs 50% confidence
 
 # Performance
 performance:
-  # Usar half precision (FP16) - mais rápido em GPUs compatíveis
-  # IMPORTANTE: Manter FALSE para deploy em Streamlit Cloud (CPU-only)
+  # Use half precision (FP16) - faster on compatible GPUs
+  # IMPORTANT: Keep FALSE for Streamlit Cloud deployment (CPU-only)
   use_half_precision: false
   
-  # Device para inferência: "cpu", "cuda", "cuda:0", etc.
-  # IMPORTANTE: Usar "cpu" para deploy em Streamlit Cloud
+  # Device for inference: "cpu", "cuda", "cuda:0", etc.
+  # IMPORTANT: Use "cpu" for Streamlit Cloud deployment
   device: "cpu"
   
-  # Usar TensorRT para otimização (requer instalação separada)
-  # IMPORTANTE: Não disponível em ambientes cloud
+  # Use TensorRT for optimization (requires separate installation)
+  # IMPORTANT: Not available in cloud environments
   use_tensorrt: false
 
 # Interface
 interface:
-  # Número de colunas para exibir imagens de teste
+  # Number of columns to display test images
   test_images_columns: 4
   
-  # Tamanho máximo de upload (MB)
+  # Maximum upload size (MB)
   max_upload_size_mb: 10
   
-  # Formatos de imagem permitidos
+  # Allowed image formats
   allowed_formats: ["png", "jpg", "jpeg", "webp"]
 
-# Segurança
+# Security
 security:
-  # Verificar dimensões da imagem antes de processar
+  # Check image dimensions before processing
   check_image_dimensions: true
   
-  # Dimensão máxima permitida (largura ou altura em pixels)
+  # Maximum allowed dimension (width or height in pixels)
   max_image_dimension: 4096
   
-  # Dimensão mínima permitida (largura ou altura em pixels)
+  # Minimum allowed dimension (width or height in pixels)
   min_image_dimension: 32
 
-# Logging e Debug
+# Logging and Debug
 debug:
-  # Exibir tempo de inferência
+  # Show inference time
   show_inference_time: true
   
-  # Salvar imagens processadas
+  # Save processed images
   save_predictions: false
   
-  # Diretório para salvar predições
-  predictions_dir: "predictions"
+  # Directory to save predictions
+  predictions_dir: "predictions_monitoring"
   
-  # Modo verbose (mais informações no console)
+  # Verbose mode (more information in console)
   verbose: false
 
 # Cache
 cache:
-  # Habilitar cache do modelo
+  # Enable model cache
   enable_model_cache: true
   
-  # Habilitar cache de dados
+  # Enable data cache
   enable_data_cache: true
   
-  # TTL do cache em segundos (0 = infinito)
+  # Cache TTL in seconds (0 = infinite)
   cache_ttl: 3600
-
