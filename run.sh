@@ -2,10 +2,9 @@
 
 # Script to run the Canine AI application
 
-echo "🐕 Starting Canine AI..."
+echo "🐕 Starting DogBreed Vision API..."
 echo ""
 
-# Check if virtual environment exists
 if [ ! -d "venv" ]; then
     echo "📦 Creating virtual environment..."
     python -m venv venv
@@ -22,10 +21,10 @@ if [ ! -f "venv/.deps_installed" ]; then
     touch venv/.deps_installed
 fi
 
-# Run application
-echo "🚀 Starting Streamlit application..."
+# Run API
+echo "🚀 Starting FastAPI server..."
 echo ""
-streamlit run app.py
+uvicorn app:app --host 0.0.0.0 --port 7860
 
 # Deactivate virtual environment on exit
 deactivate
