@@ -1,3 +1,14 @@
+---
+title: DogBreed Vision API
+emoji: 🐕
+colorFrom: blue
+colorTo: purple
+sdk: docker
+sdk_version: "1.0.0"
+app_file: app.py
+pinned: false
+---
+
 # 🔬 DogBreed Vision API
 
 FastAPI backend for real-time canine breed recognition powered by YOLOv8. The project is designed for Hugging Face Spaces (Docker runtime) and serves a clean REST interface ready for portfolio demonstrations and production-grade integrations.

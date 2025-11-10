@@ -199,12 +199,19 @@ class ModelService:
             )
             detections.append(detection)
 
+        model_config = getattr(self._model.model, "yaml", {})
+        model_name = (
+            (model_config.get("name") if isinstance(model_config, dict) else None)
+            or getattr(self._model, "task", None)
+            or "yolov8"
+        )
+
         return PredictionResponse(
             detections=detections,
             inference_time=inference_time,
             image_size={"width": int(image.width), "height": int(image.height)},
             device=str(model_device),
-            model_name=self._model.name or "yolov8",
+            model_name=str(model_name),
         )
 
     @staticmethod
