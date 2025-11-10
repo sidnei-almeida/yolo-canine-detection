@@ -8,5 +8,3 @@ POST /predict    - Accepts an image file (multipart/form-data) and runs inferenc
 POST /reload-config - Reloads configuration values from config.yaml at runtime.
 
 
-
-
